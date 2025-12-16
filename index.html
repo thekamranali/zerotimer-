@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KamranAli Stopwatch & Click Counters</title>
+    <meta name="description"
+        content="Attractive stopwatch timer with click counters, dark & default mode, animated background, and unique KamranAli branding." />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+        :root {
+            --bg-color: linear-gradient(135deg, #fef9c3, #e0f2fe);
+            --card-bg: rgba(255, 255, 255, 0.8);
+            --text-color: #111;
+            --timer-color: #f59e0b;
+            --button-bg: #3b82f6;
+            --button-hover: #2563eb;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: linear-gradient(135deg, #1e293b, #0f172a);
+            --card-bg: rgba(2, 6, 23, 0.85);
+            --text-color: #fff;
+            --timer-color: #fbbf24;
+            --button-bg: #10b981;
+            --button-hover: #059669;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background: var(--bg-color);
+            transition: background 0.5s ease;
+            overflow: hidden;
+            position: relative;
+            color: var(--text-color);
+        }
+
+        /* Animated blurred circles */
+        body::before,
+        body::after {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            filter: blur(120px);
+            animation: float 20s infinite alternate;
+            z-index: -1;
+        }
+
+        body::after {
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            animation-duration: 25s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0);
+            }
+
+            100% {
+                transform: translate(60px, 60px);
+            }
+        }
+
+        .timer {
+            font-size: 70px;
+            margin-bottom: 20px;
+            color: var(--timer-color);
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            letter-spacing: 2px;
+            font-weight: bold;
+        }
+
+        .timer-buttons {
+            margin-bottom: 40px;
+        }
+
+        .timer-buttons button {
+            background: var(--button-bg);
+            color: #fff;
+            border: none;
+            padding: 14px 25px;
+            margin: 0 10px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: transform 0.2s ease, background 0.3s ease;
+        }
+
+        .timer-buttons button:hover {
+            background: var(--button-hover);
+            transform: translateY(-3px);
+        }
+
+        .click-box {
+            display: flex;
+            flex-direction: column;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            gap: 20px;
+            text-align: center;
+        }
+
+        .counter-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .counter {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 20px;
+            transition: background 0.3s, transform 0.3s;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .counter:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .counter strong {
+            display: block;
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        .counter span {
+            font-size: 32px;
+            display: block;
+            margin-bottom: 10px;
+            color: var(--timer-color);
+        }
+
+        .counter button {
+            background: var(--button-bg);
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            margin: 3px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: transform 0.2s ease;
+        }
+
+        .counter button:hover {
+            background: var(--button-hover);
+            transform: translateY(-2px);
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            border: none;
+            background: #f59e0b;
+            color: #111;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body data-theme="default">
+
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Dark/Light</button>
+
+    <div class="timer" id="timer">00:00:00</div>
+    <div class="timer-buttons">
+        <button onclick="startWatch()">Start</button>
+        <button onclick="pauseWatch()">Pause</button>
+        <button onclick="resetWatch()">Reset</button>
+    </div>
+
+    <div class="click-box">
+        <div class="counter-row">
+            <div class="counter">
+                <strong>Counter 1</strong>
+                <span id="count1">0</span>
+                <button onclick="addClick1()">+1</button>
+                <button onclick="resetClick1()">Reset</button>
+            </div>
+            <div class="counter">
+                <strong>Counter 2</strong>
+                <span id="count2">0</span>
+                <button onclick="addClick2()">+1</button>
+                <button onclick="resetClick2()">Reset</button>
+            </div>
+        </div>
+        <div class="counter-row">
+            <div class="counter">
+                <strong>Counter 3</strong>
+                <span id="count3">0</span>
+                <button onclick="addClick3()">+1</button>
+                <button onclick="resetClick3()">Reset</button>
+            </div>
+            <div class="counter">
+                <strong>Counter 4</strong>
+                <span id="count4">0</span>
+                <button onclick="addClick4()">+1</button>
+                <button onclick="resetClick4()">Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let seconds = 0;
+        let interval = null;
+
+        let count1 = localStorage.getItem('count1') || 0;
+        let count2 = localStorage.getItem('count2') || 0;
+        let count3 = localStorage.getItem('count3') || 0;
+        let count4 = localStorage.getItem('count4') || 0;
+
+        document.getElementById('count1').innerText = count1;
+        document.getElementById('count2').innerText = count2;
+        document.getElementById('count3').innerText = count3;
+        document.getElementById('count4').innerText = count4;
+
+        function formatTime(sec) {
+            const hrs = String(Math.floor(sec / 3600)).padStart(2, '0');
+            const mins = String(Math.floor((sec % 3600) / 60)).padStart(2, '0');
+            const secs = String(sec % 60).padStart(2, '0');
+            return `${hrs}:${mins}:${secs}`;
+        }
+
+        function startWatch() {
+            if (interval) return;
+            interval = setInterval(() => {
+                seconds++;
+                document.getElementById('timer').innerText = formatTime(seconds);
+            }, 1000);
+        }
+
+        function pauseWatch() {
+            clearInterval(interval);
+            interval = null;
+        }
+
+        function resetWatch() {
+            pauseWatch();
+            seconds = 0;
+            document.getElementById('timer').innerText = '00:00:00';
+        }
+
+        function addClick1() { count1++; localStorage.setItem('count1', count1); document.getElementById('count1').innerText = count1; }
+        function resetClick1() { count1 = 0; localStorage.setItem('count1', 0); document.getElementById('count1').innerText = 0; }
+        function addClick2() { count2++; localStorage.setItem('count2', count2); document.getElementById('count2').innerText = count2; }
+        function resetClick2() { count2 = 0; localStorage.setItem('count2', 0); document.getElementById('count2').innerText = 0; }
+        function addClick3() { count3++; localStorage.setItem('count3', count3); document.getElementById('count3').innerText = count3; }
+        function resetClick3() { count3 = 0; localStorage.setItem('count3', 0); document.getElementById('count3').innerText = 0; }
+        function addClick4() { count4++; localStorage.setItem('count4', count4); document.getElementById('count4').innerText = count4; }
+        function resetClick4() { count4 = 0; localStorage.setItem('count4', 0); document.getElementById('count4').innerText = 0; }
+
+        function toggleTheme() {
+            const body = document.body;
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.setAttribute('data-theme', 'default');
+            } else {
+                body.setAttribute('data-theme', 'dark');
+            }
+        }
+    </script>
+
+</body>
+
+</html>
