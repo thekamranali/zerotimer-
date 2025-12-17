@@ -4,287 +4,232 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KamranAli Stopwatch & Click Counters</title>
-    <meta name="description"
-        content="Attractive stopwatch timer with click counters, dark & default mode, animated background, and unique KamranAli branding." />
+    <title>ZeroTimer - Fresh Layout</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-
-        :root {
-            --bg-color: linear-gradient(135deg, #fef9c3, #e0f2fe);
-            --card-bg: rgba(255, 255, 255, 0.8);
-            --text-color: #111;
-            --timer-color: #f59e0b;
-            --button-bg: #3b82f6;
-            --button-hover: #2563eb;
-        }
-
-        [data-theme="dark"] {
-            --bg-color: linear-gradient(135deg, #1e293b, #0f172a);
-            --card-bg: rgba(2, 6, 23, 0.85);
-            --text-color: #fff;
-            --timer-color: #fbbf24;
-            --button-bg: #10b981;
-            --button-hover: #059669;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: 'Roboto', sans-serif;
             margin: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            background: var(--bg-color);
-            transition: background 0.5s ease;
-            overflow: hidden;
-            position: relative;
-            color: var(--text-color);
-        }
-
-        /* Animated blurred circles */
-        body::before,
-        body::after {
-            content: '';
-            position: absolute;
-            width: 400px;
-            height: 400px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.15);
-            filter: blur(120px);
-            animation: float 20s infinite alternate;
-            z-index: -1;
-        }
-
-        body::after {
-            width: 300px;
-            height: 300px;
-            background: rgba(255, 255, 255, 0.1);
-            animation-duration: 25s;
-        }
-
-        @keyframes float {
-            0% {
-                transform: translate(0, 0);
-            }
-
-            100% {
-                transform: translate(60px, 60px);
-            }
-        }
-
-        .timer {
-            font-size: 70px;
-            margin-bottom: 20px;
-            color: var(--timer-color);
-            text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-            letter-spacing: 2px;
-            font-weight: bold;
-        }
-
-        .timer-buttons {
-            margin-bottom: 40px;
-        }
-
-        .timer-buttons button {
-            background: var(--button-bg);
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0b1b38, #06323f);
             color: #fff;
-            border: none;
-            padding: 14px 25px;
-            margin: 0 10px;
-            border-radius: 15px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: transform 0.2s ease, background 0.3s ease;
-        }
-
-        .timer-buttons button:hover {
-            background: var(--button-hover);
-            transform: translateY(-3px);
-        }
-
-        .click-box {
             display: flex;
             flex-direction: column;
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-            gap: 20px;
+            align-items: center;
+            min-height: 100vh;
+            transition: 0.3s;
+        }
+
+        body.dark {
+            background: linear-gradient(135deg, #121212, #2c2c2c);
+            color: #eee;
+        }
+
+        header,
+        footer {
+            width: 100%;
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.849);
+            backdrop-filter: blur(5px);
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .container {
+            max-width: 700px;
+            width: 95%;
+            margin: 30px auto;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
             text-align: center;
         }
 
-        .counter-row {
+        .stopwatch {
+            font-size: 5rem;
+            font-weight: 800;
+            margin-bottom: 25px;
+            letter-spacing: 3px;
+            color: #000000;
+            text-shadow: 0 0 10px#f2f1f7, 0 0 20px#ffffff;
+        }
+
+        .buttons button {
+            font-size: 1.1rem;
+            padding: 12px 28px;
+            margin: 5px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            background: rgb(11, 18, 58);
+            color: white;
+            font-weight: bold;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .buttons button:hover {
+            background: #e65603;
+        }
+
+        .theme-toggle button {
+            margin-bottom: 20px;
+            padding: 10px 25px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            background-color: #00e676;
+            color: #121212;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .theme-toggle button:hover {
+            background-color: #00c853;
+        }
+
+        .counters {
             display: flex;
-            justify-content: space-between;
-            gap: 15px;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 30px;
         }
 
         .counter {
-            flex: 1;
+            flex: 1 1 150px;
+            min-width: 140px;
             background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 20px;
-            transition: background 0.3s, transform 0.3s;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+            transition: 0.3s;
         }
 
-        .counter:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-5px);
-        }
-
-        .counter strong {
-            display: block;
-            font-size: 22px;
+        .counter h3 {
             margin-bottom: 10px;
+            color: #00b0ff;
         }
 
-        .counter span {
-            font-size: 32px;
-            display: block;
+        .counter div {
+            font-size: 2rem;
+            font-weight: bold;
             margin-bottom: 10px;
-            color: var(--timer-color);
         }
 
         .counter button {
-            background: var(--button-bg);
-            color: #fff;
+            margin: 5px;
+            padding: 8px 14px;
             border: none;
-            padding: 10px 15px;
-            margin: 3px;
-            border-radius: 10px;
+            border-radius: 12px;
+            background: #ffab00;
+            color: #121212;
+            font-weight: bold;
             cursor: pointer;
-            font-size: 14px;
-            transition: transform 0.2s ease;
+            transition: 0.2s;
+            font-size: 1.5rem;
         }
 
         .counter button:hover {
-            background: var(--button-hover);
-            transform: translateY(-2px);
-        }
-
-        .theme-toggle {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            padding: 10px 15px;
-            border-radius: 10px;
-            cursor: pointer;
-            border: none;
-            background: #f59e0b;
-            color: #111;
-            font-weight: bold;
+            background: #ff6d00;
         }
     </style>
 </head>
 
-<body data-theme="default">
+<body>
+    <header>Kam'sTimer</header>
 
-    <button class="theme-toggle" onclick="toggleTheme()">Toggle Dark/Light</button>
+    <div class="container">
+        <div class="theme-toggle">
+            <button onclick="toggleTheme()">Toggle Dark/Light Theme</button>
+        </div>
 
-    <div class="timer" id="timer">00:00:00</div>
-    <div class="timer-buttons">
-        <button onclick="startWatch()">Start</button>
-        <button onclick="pauseWatch()">Pause</button>
-        <button onclick="resetWatch()">Reset</button>
-    </div>
+        <div class="stopwatch" id="stopwatch">00:00:00.00</div>
 
-    <div class="click-box">
-        <div class="counter-row">
+        <div class="buttons">
+            <button onclick="startStopwatch()">Start</button>
+            <button onclick="stopStopwatch()">Stop</button>
+            <button onclick="resetStopwatch()">Reset</button>
+        </div>
+
+        <div class="counters">
             <div class="counter">
-                <strong>Counter 1</strong>
-                <span id="count1">0</span>
-                <button onclick="addClick1()">+1</button>
-                <button onclick="resetClick1()">Reset</button>
+                <h3>Counter 1</h3>
+                <div id="counter1">0</div>
+                <button onclick="changeCounter('counter1',1)">+</button>
+                <button onclick="changeCounter('counter1',-1)">-</button>
             </div>
             <div class="counter">
-                <strong>Counter 2</strong>
-                <span id="count2">0</span>
-                <button onclick="addClick2()">+1</button>
-                <button onclick="resetClick2()">Reset</button>
+                <h3>Counter 2</h3>
+                <div id="counter2">0</div>
+                <button onclick="changeCounter('counter2',1)">+</button>
+                <button onclick="changeCounter('counter2',-1)">-</button>
+            </div>
+            <div class="counter">
+                <h3>Counter 3</h3>
+                <div id="counter3">0</div>
+                <button onclick="changeCounter('counter3',1)">+</button>
+                <button onclick="changeCounter('counter3',-1)">-</button>
+            </div>
+            <div class="counter">
+                <h3>Counter 4</h3>
+                <div id="counter4">0</div>
+                <button onclick="changeCounter('counter4',1)">+</button>
+                <button onclick="changeCounter('counter4',-1)">-</button>
             </div>
         </div>
-        <div class="counter-row">
-            <div class="counter">
-                <strong>Counter 3</strong>
-                <span id="count3">0</span>
-                <button onclick="addClick3()">+1</button>
-                <button onclick="resetClick3()">Reset</button>
-            </div>
-            <div class="counter">
-                <strong>Counter 4</strong>
-                <span id="count4">0</span>
-                <button onclick="addClick4()">+1</button>
-                <button onclick="resetClick4()">Reset</button>
-            </div>
-        </div>
     </div>
+
+    <footer>&copy; 2025 ZeroTimer. All Rights Reserved.</footer>
 
     <script>
-        let seconds = 0;
-        let interval = null;
+        let startTime, elapsed = 0, stopwatchInterval;
 
-        let count1 = localStorage.getItem('count1') || 0;
-        let count2 = localStorage.getItem('count2') || 0;
-        let count3 = localStorage.getItem('count3') || 0;
-        let count4 = localStorage.getItem('count4') || 0;
-
-        document.getElementById('count1').innerText = count1;
-        document.getElementById('count2').innerText = count2;
-        document.getElementById('count3').innerText = count3;
-        document.getElementById('count4').innerText = count4;
-
-        function formatTime(sec) {
-            const hrs = String(Math.floor(sec / 3600)).padStart(2, '0');
-            const mins = String(Math.floor((sec % 3600) / 60)).padStart(2, '0');
-            const secs = String(sec % 60).padStart(2, '0');
-            return `${hrs}:${mins}:${secs}`;
+        function formatTime(cs) {
+            let totalSeconds = Math.floor(cs / 100);
+            let centiseconds = cs % 100;
+            let seconds = totalSeconds % 60;
+            let totalMinutes = Math.floor(totalSeconds / 60);
+            let minutes = totalMinutes % 60;
+            let hours = Math.floor(totalMinutes / 60);
+            return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}.${String(centiseconds).padStart(2, '0')}`;
         }
 
-        function startWatch() {
-            if (interval) return;
-            interval = setInterval(() => {
-                seconds++;
-                document.getElementById('timer').innerText = formatTime(seconds);
-            }, 1000);
+        function updateStopwatch() {
+            elapsed++;
+            document.getElementById('stopwatch').textContent = formatTime(elapsed);
         }
 
-        function pauseWatch() {
-            clearInterval(interval);
-            interval = null;
-        }
-
-        function resetWatch() {
-            pauseWatch();
-            seconds = 0;
-            document.getElementById('timer').innerText = '00:00:00';
-        }
-
-        function addClick1() { count1++; localStorage.setItem('count1', count1); document.getElementById('count1').innerText = count1; }
-        function resetClick1() { count1 = 0; localStorage.setItem('count1', 0); document.getElementById('count1').innerText = 0; }
-        function addClick2() { count2++; localStorage.setItem('count2', count2); document.getElementById('count2').innerText = count2; }
-        function resetClick2() { count2 = 0; localStorage.setItem('count2', 0); document.getElementById('count2').innerText = 0; }
-        function addClick3() { count3++; localStorage.setItem('count3', count3); document.getElementById('count3').innerText = count3; }
-        function resetClick3() { count3 = 0; localStorage.setItem('count3', 0); document.getElementById('count3').innerText = 0; }
-        function addClick4() { count4++; localStorage.setItem('count4', count4); document.getElementById('count4').innerText = count4; }
-        function resetClick4() { count4 = 0; localStorage.setItem('count4', 0); document.getElementById('count4').innerText = 0; }
-
-        function toggleTheme() {
-            const body = document.body;
-            if (body.getAttribute('data-theme') === 'dark') {
-                body.setAttribute('data-theme', 'default');
-            } else {
-                body.setAttribute('data-theme', 'dark');
+        function startStopwatch() {
+            if (!stopwatchInterval) {
+                stopwatchInterval = setInterval(updateStopwatch, 10);
             }
         }
-    </script>
 
+        function stopStopwatch() {
+            clearInterval(stopwatchInterval);
+            stopwatchInterval = null;
+        }
+
+        function resetStopwatch() {
+            stopStopwatch();
+            elapsed = 0;
+            document.getElementById('stopwatch').textContent = "00:00:00.00";
+        }
+
+        function changeCounter(id, value) {
+            const counter = document.getElementById(id);
+            let current = parseInt(counter.textContent);
+            current += value;
+            if (current < 0) current = 0;
+            counter.textContent = current;
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark');
+        }
+    </script>
 </body>
 
 </html>
